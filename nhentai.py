@@ -1,8 +1,8 @@
 from . import MangaSource
-import requests
 from bs4 import BeautifulSoup
 import datetime as dt
 import humanize
+import cfscrape
 
 class NHentai(MangaSource):
     source_name = 'NHentai'
@@ -12,11 +12,13 @@ class NHentai(MangaSource):
     top_url = 'https://nhentai.net/language/english/popular'
     upd_url = 'https://nhentai.net/language/english'
 
+    requests = cfscrape.Session()
+
     def updates(self, count=5):
         mgd = []
-        soup = BeautifulSoup(requests.get(self.upd_url).text, features='html.parser')
+        soup = BeautifulSoup(self.requests.get(self.upd_url).text, features='html.parser')
         for x in soup.find_all('div', {'class': 'gallery'}, limit=count):
-            ft = BeautifulSoup(requests.get(self.base_url+x.find('a')['href']).text, features='html.parser').find('div', {'id': 'info'}).find('time')['datetime']
+            ft = BeautifulSoup(self.requests.get(self.base_url+x.find('a')['href']).text, features='html.parser').find('div', {'id': 'info'}).find('time')['datetime']
             mgd.append({
                 'name': x.find('div', {'class': 'caption'}).text,
                 'cover': 'https:'+'/'.join(x.find('img')['data-src'].replace('thumb', 'cover')),
@@ -27,9 +29,9 @@ class NHentai(MangaSource):
 
     def top(self, count=5):
         mgd = []
-        soup = BeautifulSoup(requests.get(self.upd_url).text, features='html.parser')
+        soup = BeautifulSoup(self.requests.get(self.upd_url).text, features='html.parser')
         for x in soup.find_all('div', {'class': 'gallery'}, limit=count):
-            ft = BeautifulSoup(requests.get(self.base_url+x.find('a')['href']).text, features='html.parser').find('div', {'id': 'info'}).find('time')['datetime']
+            ft = BeautifulSoup(self.requests.get(self.base_url+x.find('a')['href']).text, features='html.parser').find('div', {'id': 'info'}).find('time')['datetime']
             mgd.append({
                 'name': x.find('div', {'class': 'caption'}).text,
                 'cover': 'https:'+'/'.join(x.find('img')['data-src'].replace('thumb', 'cover')),
@@ -41,7 +43,7 @@ class NHentai(MangaSource):
     def manga(self, iden):
         try:
             mg_url = f'{self.base_url}/g/{iden}/'
-            soup = BeautifulSoup(requests.get(mg_url).text, features='html.parser').find('section', {'id': 'tags'})
+            soup = BeautifulSoup(self.requests.get(mg_url).text, features='html.parser').find('section', {'id': 'tags'})
             genres = []
             for x in soup.find_all('span', {'class': 'tags'})[2].find_all('a'):
                 x.span.decompose()
@@ -74,7 +76,7 @@ class NHentai(MangaSource):
     def chapter(self, iden):
         try:
             mg_url = f'{self.base_url}/g/{iden}/'
-            soup = BeautifulSoup(requests.get(mg_url).text, features='html.parser')
+            soup = BeautifulSoup(self.requests.get(mg_url).text, features='html.parser')
             pgs = []
             for x in soup.find_all('div', {'class': 'thumb-container'}):
                 trurl = x.find('img')['data-src']
