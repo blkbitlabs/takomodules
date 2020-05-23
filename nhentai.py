@@ -21,7 +21,7 @@ class NHentai(MangaSource):
             ft = BeautifulSoup(self.requests.get(self.base_url+x.find('a')['href']).text, features='html.parser').find('div', {'id': 'info'}).find('time')['datetime']
             mgd.append({
                 'name': x.find('div', {'class': 'caption'}).text,
-                'cover': 'https:'+'/'.join(x.find('img')['data-src'].replace('thumb', 'cover')),
+                'cover': x.find('img')['data-src'].replace('thumb', 'cover'),
                 'id': x.find('a', {'class': 'cover'})['href'].split('/')[-2],
                 'time': humanize.naturaltime(dt.datetime.now()-dt.datetime.strptime(ft, '%Y-%m-%dT%H:%M:%S.%f%z').replace(tzinfo=None))
             })
@@ -34,7 +34,7 @@ class NHentai(MangaSource):
             ft = BeautifulSoup(self.requests.get(self.base_url+x.find('a')['href']).text, features='html.parser').find('div', {'id': 'info'}).find('time')['datetime']
             mgd.append({
                 'name': x.find('div', {'class': 'caption'}).text,
-                'cover': 'https:'+'/'.join(x.find('img')['data-src'].replace('thumb', 'cover')),
+                'cover': x.find('img')['data-src'].replace('thumb', 'cover'),
                 'id': x.find('a', {'class': 'cover'})['href'].split('/')[-2],
                 'time': humanize.naturaltime(dt.datetime.now()-dt.datetime.strptime(ft, '%Y-%m-%dT%H:%M:%S.%f%z').replace(tzinfo=None))
             })
