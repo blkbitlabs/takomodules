@@ -88,7 +88,7 @@ class Mangadex(MangaSource):
             mg = munchify(self._manga(iden).result().json())
             chs = [{
                     'id': y,
-                    'title': _format_title(mg.chapter[y].volume, mg.chapter[y].chapter)
+                    'title': self._format_title(mg.chapter[y].volume, mg.chapter[y].chapter)
                 } for y in mg.chapter if mg.chapter[y].lang_code == 'gb']
             dat = {
                 'description': self._clean_text(html.unescape(mg.manga.description)),
