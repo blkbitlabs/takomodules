@@ -52,7 +52,7 @@ class Mangadex(MangaSource):
         for future in mg_futures:
             try:
                 data = munchify(future.result().json())
-                time = dt.datetime.now()-dt.datetime.fromtimestamp(data.chapter[max({y: int(data.chapter[y].timestamp) for y in data.chapter}.items(), key = operator.itemgetter(1))[0]].timestamp)
+                time = dt.datetime.now()-dt.datetime.fromtimestamp(data.chapter[max({y: int(data.chapter[y].timestamp) for y in [y for y in data.chapter if data.chapter[y].lang_code == 'gb']}.items(), key = operator.itemgetter(1))[0]].timestamp)
                 mgd.append({
                     'id': mg_futures[future],
                     'name': html.unescape(data.manga.title),
@@ -71,7 +71,7 @@ class Mangadex(MangaSource):
         for future in mg_futures:
             try:
                 data = munchify(future.result().json())
-                time = dt.datetime.now()-dt.datetime.fromtimestamp(data.chapter[max({y: int(data.chapter[y].timestamp) for y in data.chapter}.items(), key = operator.itemgetter(1))[0]].timestamp)
+                time = dt.datetime.now()-dt.datetime.fromtimestamp(data.chapter[max({y: int(data.chapter[y].timestamp) for y in [y for y in data.chapter if data.chapter[y].lang_code == 'gb']}.items(), key = operator.itemgetter(1))[0]].timestamp)
                 mgd.append({
                     'id': mg_futures[future],
                     'name': data.manga.title,
