@@ -109,7 +109,7 @@ class Mangadex(MangaSource):
 
     def chapter(self, iden):
         try:
-            ch = self._chapter(iden)
+            ch = munchify(self._chapter(iden).result().json())
             if ch.status == 'delayed':
                 return {
                     'status': 'delayed'
