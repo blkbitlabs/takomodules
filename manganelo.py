@@ -5,7 +5,7 @@ import dateparser
 import humanize
 import datetime as dt
 
-def Manganelo(MangaSource):
+class Manganelo(MangaSource):
     source_name = 'Manganelo'
     source_id = 'mgnelo'
 
