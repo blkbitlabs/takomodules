@@ -1,4 +1,4 @@
-from __init__ import MangaSource
+from . import MangaSource
 import cfscrape
 from bs4 import BeautifulSoup
 import dateparser
