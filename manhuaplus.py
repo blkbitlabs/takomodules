@@ -18,7 +18,7 @@ class ManhuaPlus(MangaSource):
     
     def updates(self, count=5):
         mgd = []
-        soup = BeautifulSoup(self.requests.get(self.base_url).text, parser='html.parser').find('div', {'class': 'items'})
+        soup = BeautifulSoup(self.requests.get(self.base_url).text, features='html.parser').find('div', {'class': 'items'})
         for x in soup.find_all('div', {'class': 'item'}, limit=count):
             img = x.find('img')['data-original']
             title = x.find('a')
@@ -35,7 +35,7 @@ class ManhuaPlus(MangaSource):
 
     def top(self, count=5):
         mgd = []
-        soup = BeautifulSoup(self.requests.get(self.top_url).text, parser='html.parser').find('div', {'class': 'items'})
+        soup = BeautifulSoup(self.requests.get(self.top_url).text, features='html.parser').find('div', {'class': 'items'})
         for x in soup.find_all('div', {'class': 'item'}, limit=count):
             img = x.find('img')['data-original']
             title = x.find('a')
