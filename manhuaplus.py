@@ -1,6 +1,9 @@
 from . import MangaSource
 import cfscrape
 from bs4 import BeautifulSoup
+import dateparser
+import datetime as dt
+import humanize
 
 class ManhuaPlus(MangaSource):
     source_name = 'ManhuaPlus'
