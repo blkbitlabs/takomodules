@@ -5,6 +5,8 @@ import dateparser
 import humanize
 import datetime as dt
 
+## TO BE FIXED (CLOUDFLARE ERROR 1020)
+"""
 class Manganelo(MangaSource):
     source_name = 'Manganelo'
     source_id = 'mgnelo'
@@ -93,3 +95,4 @@ class Manganelo(MangaSource):
             return {
                 'status': 'error'
             }
+"""
