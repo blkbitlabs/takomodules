@@ -29,7 +29,7 @@ class NHentai(MangaSource):
 
     def top(self, count=5):
         mgd = []
-        soup = BeautifulSoup(self.requests.get(self.upd_url).text, features='html.parser')
+        soup = BeautifulSoup(self.requests.get(self.top_url).text, features='html.parser')
         for x in soup.find_all('div', {'class': 'gallery'}, limit=count):
             ft = BeautifulSoup(self.requests.get(self.base_url+x.find('a')['href']).text, features='html.parser').find('div', {'id': 'info'}).find('time')['datetime']
             mgd.append({
