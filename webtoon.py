@@ -7,6 +7,7 @@ import dateparser
 from urllib.parse import urlsplit, parse_qs
 import humanize
 import base64
+from config import keys
 
 class WEBTOONS(MangaSource):
     source_name = 'WEBTOONS'
@@ -21,11 +22,12 @@ class WEBTOONS(MangaSource):
         'referer': 'https://m.webtoons.com'
     }
     requests = cfscrape.Session()
+    pool = concurrent.futures.ThreadPoolExecutor(8)
 
     def _reupload(self, url):
         dat = self.requests.get(url, headers=self.mheaders).content
         b = base64.b64encode(dat).decode("utf-8")
-        upl = self.requests.post('https://api.imgbb.com/1/upload', data={'image': b, 'key': '14b5abc792a977027d12ed0f8370075d'}).json()
+        upl = self.requests.post('https://api.imgbb.com/1/upload', data={'image': b, 'key': keys['imgbb']}).json()
         return upl['data']['url']
 
     def updates(self, count=5):
@@ -102,9 +104,8 @@ class WEBTOONS(MangaSource):
             mg, chp = iden.split(';')
             url = self.chp_url.format(mg, chp)
             pgs = BeautifulSoup(self.requests.get(url).text, features='html.parser').find('div', {'id': '_imageList'})
-            pool = concurrent.futures.ThreadPoolExecutor(8)
             pgs = [x['data-url'] for x in pgs.find_all('img')]
-            futures = {pool.submit(self._reupload, (x)):i for i, x in enumerate(pgs)}
+            futures = {self.pool.submit(self._reupload, (x)):i for i, x in enumerate(pgs)}
             pgs = [None]*len(pgs)
             for future in concurrent.futures.as_completed(futures):
                 pgs[futures[future]] = future.result()
