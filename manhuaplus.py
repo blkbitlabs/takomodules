@@ -122,7 +122,7 @@ class Manga347(MangaSource):
 
     def top(self, count=5):
         # Does not have top
-        return updates(count)
+        return self.updates(count)
 
     def manga(self, iden):
         try:
